@@ -49,15 +49,15 @@ def _orig_cdf_distance(p, u_values, v_values, u_weights=None, v_weights=None):
     v_sorter = np.argsort(v_values)
 
     all_values = np.concatenate((u_values, v_values))
-    all_values.sort(kind='mergesort')
+    all_values = np.sort(all_values, kind='mergesort')
 
     # Compute the differences between pairs of successive values of u and v.
     deltas = np.diff(all_values)
 
     # Get the respective positions of the values of u and v among the values of
     # both distributions.
-    u_cdf_indices = u_values[u_sorter].searchsorted(all_values[:-1], 'right')
-    v_cdf_indices = v_values[v_sorter].searchsorted(all_values[:-1], 'right')
+    u_cdf_indices = np.searchsorted(u_values[u_sorter], all_values[:-1], 'right')
+    v_cdf_indices = np.searchsorted(v_values[v_sorter], all_values[:-1], 'right')
 
     # Calculate the CDFs of u and v using their weights, if specified.
     if u_weights is None:
